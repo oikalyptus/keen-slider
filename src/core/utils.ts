@@ -31,9 +31,11 @@ export function elem(
     | ((
         wrapper: HTMLElement | Document
       ) => HTMLElement[] | NodeList | HTMLCollection | null),
-  wrapper?: HTMLElement
+  wrapper?: HTMLElement | Document
 ): HTMLElement {
-  const elements = elems(element, wrapper || document)
+  wrapper = wrapper || document
+  if (!wrapper) return
+  const elements = elems(element, wrapper)
   return elements.length ? elements[0] : null
 }
 
@@ -57,6 +59,7 @@ export function elems(
   wrapper: HTMLElement | Document
 ): HTMLElement[] {
   wrapper = wrapper || document
+  if (!wrapper) return
   if (typeof elements === 'function') elements = elements(wrapper)
 
   return Array.isArray(elements)
